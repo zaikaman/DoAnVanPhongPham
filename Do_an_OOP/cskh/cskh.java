@@ -1,4 +1,3 @@
-package com.cskh;
 
 public class ThongTinLienLac {
     String ten;
