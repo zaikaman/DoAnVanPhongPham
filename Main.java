@@ -14,13 +14,15 @@ class DonHang {
     private GioHang gioHang;
     private Date ngayDatHang;
     private String trangThaiDonHang;
+    private PhuongThucThanhToan phuongThucThanhToan;
 
-    public DonHang(String maDonHang, KhachHang khachHang, GioHang gioHang) {
+    public DonHang(String maDonHang, KhachHang khachHang, GioHang gioHang, PhuongThucThanhToan phuongThucThanhToan) {
         this.maDonHang = maDonHang;
         this.khachHang = khachHang;
         this.gioHang = gioHang;
         this.ngayDatHang = new Date();
         this.trangThaiDonHang = "Chua xu ly"; // Mặc định là chưa xử lý
+        this.phuongThucThanhToan = phuongThucThanhToan;
     }
 
     public void luuDonHang() {
@@ -30,8 +32,17 @@ class DonHang {
             String strDate = formatter.format(ngayDatHang);  
             writer.write(khachHang.getMaNguoiDung() + ", " + maDonHang + ", " + khachHang.getHoTen() + ", " + strDate + ", " + trangThaiDonHang);
     
-            // Lưu thông tin về các sản phẩm trong giỏ hàng
+            // Calculate the total amount
+            int tongSoTien = 0;
             SanPham[] sanPhamTrongGio = gioHang.getGioHang();
+            for (int i = 0; i < gioHang.getSoLuongSanPhamTrongGio(); i++) {
+                tongSoTien += sanPhamTrongGio[i].getGia();
+            }
+    
+            // Write the total amount and the payment method to the file
+            writer.write(", " + tongSoTien + ", " + phuongThucThanhToan.getTen());
+    
+            // Write the product information to the file
             for (int i = 0; i < gioHang.getSoLuongSanPhamTrongGio(); i++) {
                 writer.write(", " + sanPhamTrongGio[i].getTen());
             }
@@ -327,9 +338,20 @@ class GioHang {
             while (reader.hasNextLine()) {
                 String data = reader.nextLine();
                 String[] orderInfo = data.split(", ");
-                // Kiểm tra xem mã người dùng có khớp không
+                // Check if the user ID matches
                 if (orderInfo[0].equals(khachHang.getMaNguoiDung())) {
-                    System.out.println(data);
+                    // Display the order information
+                    System.out.println("Ma Don Hang: " + orderInfo[1]);
+                    System.out.println("Khach Hang: " + orderInfo[2]);
+                    System.out.println("Ngay Dat Hang: " + orderInfo[3]);
+                    System.out.println("Trang Thai Don Hang: " + orderInfo[4]);
+                    System.out.println("Tong So Tien: " + orderInfo[5] + " VND");
+                    System.out.println("Phuong Thuc Thanh Toan: " + orderInfo[6]);
+    
+                    // Display the product information
+                    for (int i = 7; i < orderInfo.length; i++) {
+                        System.out.println("San Pham: " + orderInfo[i]);
+                    }
                 }
             }
             reader.close();
@@ -359,7 +381,6 @@ class GioHang {
 
     void datDonHang(Scanner scanner, KhachHang khachHang) {
         System.out.println("Chon phuong thuc thanh toan:");
-        DonHang donHang = new DonHang(maDonHang, khachHang, this);
         for (PhuongThucThanhToan pttt : phuongThucThanhToans) {
             System.out.println(pttt.getMaPhuongThuc() + ". " + pttt.getTen());
         }
@@ -367,6 +388,8 @@ class GioHang {
         int luaChon = scanner.nextInt();
         scanner.nextLine();  // Consume newline left-over
     
+        PhuongThucThanhToan phuongThucThanhToan = phuongThucThanhToans[luaChon - 1];  // Get the chosen payment method
+        DonHang donHang = new DonHang(maDonHang, khachHang, this, phuongThucThanhToan);
         switch (luaChon) {
             case 1:
                 System.out.print("Nhap so the ");
