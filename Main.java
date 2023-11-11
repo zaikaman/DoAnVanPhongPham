@@ -69,6 +69,42 @@ class DonHang {
     }
 }
 
+class PhuongThucThanhToan {
+    private String maPhuongThuc;
+    private String ten;
+    private String mota;
+
+    public PhuongThucThanhToan(String maPhuongThuc, String ten, String mota) {
+        this.maPhuongThuc = maPhuongThuc;
+        this.ten = ten;
+        this.mota = mota;
+    }
+
+    public String getMaPhuongThuc() {
+        return maPhuongThuc;
+    }
+
+    public void setMaPhuongThuc(String maPhuongThuc) {
+        this.maPhuongThuc = maPhuongThuc;
+    }
+
+    public String getTen() {
+        return ten;
+    }
+
+    public void setTen(String ten) {
+        this.ten = ten;
+    }
+
+    public String getMota() {
+        return mota;
+    }
+
+    public void setMota(String mota) {
+        this.mota = mota;
+    }
+}
+
 class Feedback {
     private String maFeedback;
     private KhachHang khachHang;
@@ -169,6 +205,17 @@ class GioHang {
     private SanPham[] gioHang = new SanPham[100]; // Assuming a maximum of 100 products in the cart
     private int soLuongDonHang;
     private int soLuongSanPhamTrongGio = 0;
+    // Define phuongThucThanhToans
+    private PhuongThucThanhToan[] phuongThucThanhToans;
+    String maDonHang = generateMaDonHang();
+
+    public GioHang() {
+        // Initialize phuongThucThanhToans in the constructor
+        phuongThucThanhToans = new PhuongThucThanhToan[3];
+        phuongThucThanhToans[0] = new PhuongThucThanhToan("1", "The tin dung", "Thanh toán bằng thẻ tín dụng");
+        phuongThucThanhToans[1] = new PhuongThucThanhToan("2", "Momo", "Thanh toán bằng ví điện tử Momo");
+        phuongThucThanhToans[2] = new PhuongThucThanhToan("3", "COD", "Thanh toán khi nhận hàng (COD)");
+    }
     void muaSanPham(SanPham[] sanPhamList, Scanner scanner) {
         boolean displayMenu = true;
 
@@ -226,6 +273,51 @@ class GioHang {
         return gioHang;
     }
 
+    private String generateMaDonHang() {
+        int lastOrderId = 0;
+        File file = new File("lastorderid.txt");
+    
+        // Create the file if it doesn't exist
+        if (!file.exists()) {
+            try {
+                if (file.createNewFile()) {
+                    System.out.println("File created: " + file.getName());
+                } else {
+                    System.out.println("File already exists.");
+                }
+            } catch (IOException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+        }
+    
+        // Read the last order ID from the file
+        try {
+            Scanner scanner = new Scanner(file);
+            if (scanner.hasNextInt()) {
+                lastOrderId = scanner.nextInt();
+            }
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Could not find lastorderid.txt.");
+            e.printStackTrace();
+        }
+    
+        lastOrderId++;  // Increment the last order ID
+    
+        // Write the new last order ID to the file
+        try {
+            FileWriter writer = new FileWriter("lastorderid.txt");
+            writer.write(String.valueOf(lastOrderId));
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to lastorderid.txt.");
+            e.printStackTrace();
+        }
+    
+        return "DH" + lastOrderId;  // Return the new order ID
+    }
+        
     public void docDonHang(KhachHang khachHang) {
         try {
             File file = new File("donhang.txt");
@@ -265,26 +357,40 @@ class GioHang {
     
     DonHang[] donHangArray = new DonHang[100000];
 
-    void datDonHang(KhachHang khachHang, TaiKhoan taiKhoan) {
-        if (soLuongSanPhamTrongGio > 0) {
-            // Create a new DonHang instance
-            DonHang donHang = new DonHang("DH" + (taiKhoan.soLuongDonHang + 1), khachHang, this);
-
-            donHang.luuDonHang();
+    void datDonHang(Scanner scanner, KhachHang khachHang) {
+        System.out.println("Chon phuong thuc thanh toan:");
+        DonHang donHang = new DonHang(maDonHang, khachHang, this);
+        for (PhuongThucThanhToan pttt : phuongThucThanhToans) {
+            System.out.println(pttt.getMaPhuongThuc() + ". " + pttt.getTen());
+        }
+        System.out.print("Nhap lua chon (1, 2 hoac 3): ");
+        int luaChon = scanner.nextInt();
+        scanner.nextLine();  // Consume newline left-over
     
-            // Assuming donHangArray is an array in the GioHang class to store orders
-            donHangArray[soLuongDonHang] = donHang;
-    
-            // Increment the number of orders in GioHang
-            soLuongDonHang++;
-    
-            // Add the order to the TaiKhoan class
-            taiKhoan.donHang[taiKhoan.soLuongDonHang] = donHang;
-            taiKhoan.soLuongDonHang++;
-    
-            System.out.println("Don hang da duoc dat thanh cong.");
-        } else {
-            System.out.println("Gio hang rong. Khong the dat don hang.");
+        switch (luaChon) {
+            case 1:
+                System.out.print("Nhap so the ");
+                String soThe = scanner.nextLine();
+                System.out.print("Nhap ma CVV ");
+                String maCVV = scanner.nextLine();
+                System.out.print("Nhap ngay het han (mm/yy): ");
+                String ngayHetHan = scanner.nextLine();
+                // Here you would usually send this information securely to your payment processor
+                // But for this example, we'll just print a success message
+                System.out.println("Da thanh toan thanh cong bang the tin dung!");
+                donHang.luuDonHang();  // Save the order to the file
+                break;
+            case 2:
+                System.out.println("Hay chuyen tien cho tai khoan nay: 0931816175, Ten: Dinh Phuc Thinh");
+                donHang.luuDonHang();  // Save the order to the file
+                break;
+            case 3:
+                System.out.println("Dat hang thanh cong! San pham se duoc thanh toan khi nhan hang");
+                donHang.luuDonHang();  // Save the order to the file
+                break;
+            default:
+                System.out.println("Lua chon khong hop le.");
+                break;
         }
     }
     
@@ -607,7 +713,7 @@ class TaiKhoan {
                         feedback.luuFeedback();
                     } else if (userChoice == 7) {
                         // Người dùng chọn đặt đơn hàng
-                        gioHang.datDonHang(khachHang, taiKhoan);
+                        gioHang.datDonHang(scanner, khachHang);
                     } else if (userChoice == 8) {
                         gioHang.docDonHang(khachHang);    
                         gioHang.xemDonHang();
