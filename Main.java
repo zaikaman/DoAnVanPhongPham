@@ -28,13 +28,21 @@ class DonHang {
             FileWriter writer = new FileWriter("donhang.txt", true);
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
             String strDate = formatter.format(ngayDatHang);  
-            writer.write(maDonHang + ", " + khachHang.getHoTen() + ", " + strDate + ", " + trangThaiDonHang + "\n");
+            writer.write(khachHang.getMaNguoiDung() + ", " + maDonHang + ", " + khachHang.getHoTen() + ", " + strDate + ", " + trangThaiDonHang);
+    
+            // Lưu thông tin về các sản phẩm trong giỏ hàng
+            SanPham[] sanPhamTrongGio = gioHang.getGioHang();
+            for (int i = 0; i < gioHang.getSoLuongSanPhamTrongGio(); i++) {
+                writer.write(", " + sanPhamTrongGio[i].getTen());
+            }
+    
+            writer.write("\n");
             writer.close();
         } catch (IOException e) {
             System.out.println("Có lỗi xảy ra khi lưu đơn hàng.");
             e.printStackTrace();
         }
-    }
+    }        
 
     public String getMaDonHang() {
         return maDonHang;
@@ -218,22 +226,26 @@ class GioHang {
         return gioHang;
     }
 
-    public void docDonHang() {
+    public void docDonHang(KhachHang khachHang) {
         try {
             File file = new File("donhang.txt");
             Scanner reader = new Scanner(file);
-
+    
             System.out.println("Cac don hang da dat:");
             while (reader.hasNextLine()) {
                 String data = reader.nextLine();
-                System.out.println(data);
+                String[] orderInfo = data.split(", ");
+                // Kiểm tra xem mã người dùng có khớp không
+                if (orderInfo[0].equals(khachHang.getMaNguoiDung())) {
+                    System.out.println(data);
+                }
             }
             reader.close();
         } catch (FileNotFoundException e) {
             System.out.println("Khong tim thay tep don hang.");
             e.printStackTrace();
         }
-    }
+    }        
 
     void xemDonHang() {
         if (donHangArray != null) {
@@ -305,6 +317,16 @@ abstract class NguoiDung {
         this.maNguoiDung = generateUserID();
     }
 
+    // Phương thức để lấy mã người dùng
+    public String getMaNguoiDung() {
+        return maNguoiDung;
+    }
+
+    // Phương thức để lấy họ tên
+    public String getHoTen() {
+        return hoTen;
+    }
+
     abstract void nhapThongTin(Scanner scanner);
 
     private String generateUserID() {
@@ -322,13 +344,8 @@ abstract class NguoiDung {
 
 // Lớp KhachHang là một loại NguoiDung
 class KhachHang extends NguoiDung {
-    public String hoTen;
     KhachHang(String tenDangNhap, String matKhau) {
         super(tenDangNhap, matKhau, "KhachHang");
-    }
-
-    public String getHoTen() {
-        return hoTen;
     }
 
     @Override
@@ -591,7 +608,7 @@ class TaiKhoan {
                         // Người dùng chọn đặt đơn hàng
                         gioHang.datDonHang(khachHang, taiKhoan);
                     } else if (userChoice == 8) {
-                        gioHang.docDonHang();    
+                        gioHang.docDonHang(khachHang);    
                         gioHang.xemDonHang();
                     } else if (userChoice == 9) {
                         // Người dùng đăng xuất
@@ -657,15 +674,15 @@ class TaiKhoan {
             SanPham[] sanPhamList = new SanPham[30]; // Adjusted the array size to match the number of products
        
             // Thêm sản phẩm loại Sách
-            sanPhamList[0] = new SanPham("Nha Gia Kim – Paulo Coelho", 63000);
-            sanPhamList[1] = new SanPham("Dac Nhan Tam – Dale Carnegie", 60000);
+            sanPhamList[0] = new SanPham("Nha Gia Kim - Paulo Coelho", 63000);
+            sanPhamList[1] = new SanPham("Dac Nhan Tam - Dale Carnegie", 60000);
             sanPhamList[2] = new SanPham("Cach nghi de thanh cong - Napoleon Hill", 45000);
             sanPhamList[3] = new SanPham("Hat giong tam hon - Jack Canfield", 50000);
             sanPhamList[4] = new SanPham("Quang ganh lo di va vui song - Dale Carnegie", 60000);
-            sanPhamList[5] = new SanPham("Doc Vi Bat Ky Ai – David J.Lieberman", 55000);
-            sanPhamList[6] = new SanPham("Tieu thuyet Bo Gia – Mario Puzo", 50000);
+            sanPhamList[5] = new SanPham("Doc Vi Bat Ky Ai - David J.Lieberman", 55000);
+            sanPhamList[6] = new SanPham("Tieu thuyet Bo Gia - Mario Puzo", 50000);
             sanPhamList[7] = new SanPham("Cuoc song khong gioi han - Nick Vujicic", 80000);
-            sanPhamList[8] = new SanPham("Doi Thay Doi Khi Chung Ta Thay Doi – Andrew Matthews", 70000);
+            sanPhamList[8] = new SanPham("Doi Thay Doi Khi Chung Ta Thay Doi - Andrew Matthews", 70000);
             sanPhamList[9] = new SanPham("Nguoi giau co nhat thanh Babylon - George Samuel Clason", 65000);
        
             // Thêm sản phẩm loại Vở
