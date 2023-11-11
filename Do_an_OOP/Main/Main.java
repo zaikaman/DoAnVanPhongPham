@@ -100,7 +100,6 @@ public class Main {
                     gioHang.datDonHang(scanner, khachHang);
                 } else if (userChoice == 7) {
                     gioHang.docDonHang(khachHang);
-                    gioHang.xemDonHang();
                 } else if (userChoice == 8) {
                     // User chooses to view comments
                     System.out.println("Xem binh luan cua:");
