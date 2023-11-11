@@ -1,12 +1,6 @@
 import java.io.*;
 import java.util.*;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 
 class DonHang {
     private String maDonHang;
@@ -480,6 +474,80 @@ class GioHang {
     }
 }
 
+class ThongTinLienLac {
+    String ten;
+    String email;
+    String soDienThoai;
+    String linkMangXaHoi;
+
+    public ThongTinLienLac(String ten, String email, String soDienThoai, String linkMangXaHoi) {
+        this.ten = ten;
+        this.email = email;
+        this.soDienThoai = soDienThoai;
+        this.linkMangXaHoi = linkMangXaHoi;
+    }
+
+    public static void displayContacts(ThongTinLienLac[] danhSach) {
+        System.out.println("Ban co the lien he voi cac thanh vien sau de duoc giai quyet voi toc do phan hoi tot nhat");
+        System.out.println("Ten\t\t\tFacebook\t\tGmail\t\t\t\tSdt");
+
+        for (ThongTinLienLac lienLac : danhSach) {
+            System.out.println(lienLac.ten + "\t\t" + lienLac.linkMangXaHoi + "\t\t" + lienLac.email + "\t\t" + lienLac.soDienThoai);
+        }
+    }
+}
+
+class ThongTinChuongTrinh {
+    String maChuongTrinh;
+    String ten;
+    String moTa;
+    String teamDev;
+    Date ngayBatDau;
+    Date ngayKetThuc;
+
+    public ThongTinChuongTrinh(String maChuongTrinh, String ten, String moTa, String teamDev, Date ngayBatDau, Date ngayKetThuc) {
+        this.maChuongTrinh = maChuongTrinh;
+        this.ten = ten;
+        this.moTa = moTa;
+        this.teamDev = teamDev;
+        this.ngayBatDau = ngayBatDau;
+        this.ngayKetThuc = ngayKetThuc;
+    }
+
+    public static void displayProgramInfo() {
+        ThongTinChuongTrinh chuongTrinh = new ThongTinChuongTrinh(
+            "1.0.0",
+            "Chuong trinh Ban van phong pham",
+            "",
+            "1. Nguyen Dai Quoc\n" +
+            "   - Facebook: fb.com/wolfdzai\n" +
+            "   - Email: luutrithon1996@gmail.com\n" +
+            "   - Phone: 0931454176\n" +
+            "2. Dinh Phuc Thinh\n" +
+            "   - Facebook: fb.com/dinfucthin\n" +
+            "   - Email: zaikaman123@gmail.com\n" +
+            "   - Phone: 0931816175\n" +
+            "3. Tran Trung Viet\n" +
+            "   - Facebook: cutt.ly/qwTNnwZY\n" +
+            "4. Tran Dang Phat\n" +
+            "   - Facebook: cutt.ly/TwTNb3Ur\n" +
+            "5. Nguyen Hoang Sang\n" +
+            "   - Facebook: cutt.ly/4wTNbGKf\n" +
+            "   - Email: lesang01227982715@gmail.com\n" +
+            "   - Phone: 0776592967\n",
+            new Date(2023, 11, 8),
+            new Date(2023, 1, 1)
+        );
+
+        System.out.println("Chuong trinh: " + chuongTrinh.ten);
+        System.out.println("Version: " + chuongTrinh.maChuongTrinh);
+        System.out.println("Release Date: " + chuongTrinh.ngayBatDau);
+        System.out.println("Dev team:");
+        System.out.println(chuongTrinh.teamDev);
+    }
+}
+
+
 // Lớp cơ sở NguoiDung chứa thông tin chung
 abstract class NguoiDung {
     String tenDangNhap;
@@ -680,6 +748,40 @@ public class Main {
         SanPham[] sanPhamList = taoDanhSachSanPham();
         KhachHang khachHang = null;
         TaiKhoan taiKhoan = new TaiKhoan(); // You need to instantiate TaiKhoan
+        // Declare ThongTinLienLac related stuff
+        ThongTinLienLac[] danhSachLienLac = new ThongTinLienLac[]{
+        new ThongTinLienLac("Nguyen Dai Quoc", "luutrithon1996@gmail.com", "0931454176", "fb.com/wolfdzai"),
+        new ThongTinLienLac("Dinh Phuc Thinh", "zaikaman123@gmail.com", "0931816175", "fb.com/dinfucthin"),
+        new ThongTinLienLac("Tran Trung Viet", "", "", "cutt.ly/qwTNnwZY"),
+        new ThongTinLienLac("Tran Dang Phat", "", "", "cutt.ly/TwTNb3Ur"),
+        new ThongTinLienLac("Nguyen Hoang Sang", "lesang01227982715@gmail.com", "0776592967", "cutt.ly/4wTNbGKf")
+    };
+
+        // Declare ThongTinChuongTrinh related stuff
+        ThongTinChuongTrinh chuongTrinh = new ThongTinChuongTrinh(
+    "1.0.0",
+    "Chuong trinh Ban van phong pham",
+    "",
+    "1. Nguyen Dai Quoc\n" +
+    "   - Facebook: fb.com/wolfdzai\n" +
+    "   - Email: luutrithon1996@gmail.com\n" +
+    "   - Phone: 0931454176\n" +
+    "2. Dinh Phuc Thinh\n" +
+    "   - Facebook: fb.com/dinfucthin\n" +
+    "   - Email: zaikaman123@gmail.com\n" +
+    "   - Phone: 0931816175\n" +
+    "3. Tran Trung Viet\n" +
+    "   - Facebook: cutt.ly/qwTNnwZY\n" +
+    "4. Tran Dang Phat\n" +
+    "   - Facebook: cutt.ly/TwTNb3Ur\n" +
+    "5. Nguyen Hoang Sang\n" +
+    "   - Facebook: cutt.ly/4wTNbGKf\n" +
+    "   - Email: lesang01227982715@gmail.com\n" +
+    "   - Phone: 0776592967\n",
+    new Date(2023, 11, 8),
+    new Date(2023, 1, 1)
+);
+
 
         while (!loggedIn) {
             System.out.println("Chao mung ban den voi ung dung van phong pham!");
@@ -740,9 +842,11 @@ public class Main {
                 System.out.println("6. Dat don hang");
                 System.out.println("7. Xem don hang");
                 System.out.println("8. Xem binh luan");
-                System.out.println("9. Dang xuat");
+                System.out.println("9. Xem thong tin lien lac");
+                System.out.println("10. Xem thong tin chuong trinh");
+                System.out.println("11. Dang xuat");
                 System.out.println("Hay nhap thong tin nguoi dung truoc khi mua hang nhe!");
-                System.out.print("Nhap lua chon (1, 2, 3, 4, 5, 6, 7, 8 hoac 9): ");
+                System.out.print("Nhap lua chon (1, 2, 3, 4, 5, 6, 7, 8, 9, 10 hoac 11): ");
                 int userChoice = scanner.nextInt();
                 scanner.nextLine();
 
@@ -790,37 +894,43 @@ public class Main {
                         System.out.print("Nhap lua chon san pham (1 den 10): ");
                         int productChoice = scanner.nextInt();
                         scanner.nextLine();
-                        
+
                         boolean continueLoop = true;
                         while (loggedIn && continueLoop) {
-                        if (productChoice >= 1 && productChoice <= 10) {
-                            SanPham chosenProduct = sanPhamList[startIndex + productChoice - 1];
-                            BinhLuan binhLuan = new BinhLuan("BL" + (taiKhoan.soLuongNguoiDung + 1), "", chosenProduct);
-                            binhLuan.xemBinhLuan(chosenProduct);
-                            while (true) {
-                                System.out.print("Ban co muon binh luan san pham nay khong? (y/n): ");
-                                String commentChoice = scanner.nextLine();
-                        
-                                if (commentChoice.equalsIgnoreCase("y")) {
-                                    System.out.print("Nhap noi dung binh luan: ");
-                                    String commentContent = scanner.nextLine();
-                                    binhLuan.setNoiDung(commentContent);  // Update the comment content
-                                    binhLuan.luuBinhLuan();
-                                } else if (commentChoice.equalsIgnoreCase("n")) {
-                                    continueLoop = false;
-                                    break;  // Return to the main menu
-                                } else {
-                                    System.out.println("Lua chon khong hop le.");
+                            if (productChoice >= 1 && productChoice <= 10) {
+                                SanPham chosenProduct = sanPhamList[startIndex + productChoice - 1];
+                                BinhLuan binhLuan = new BinhLuan("BL" + (taiKhoan.soLuongNguoiDung + 1), "", chosenProduct);
+                                binhLuan.xemBinhLuan(chosenProduct);
+                                while (true) {
+                                    System.out.print("Ban co muon binh luan san pham nay khong? (y/n): ");
+                                    String commentChoice = scanner.nextLine();
+
+                                    if (commentChoice.equalsIgnoreCase("y")) {
+                                        System.out.print("Nhap noi dung binh luan: ");
+                                        String commentContent = scanner.nextLine();
+                                        binhLuan.setNoiDung(commentContent);  // Update the comment content
+                                        binhLuan.luuBinhLuan();
+                                    } else if (commentChoice.equalsIgnoreCase("n")) {
+                                        continueLoop = false;
+                                        break;  // Return to the main menu
+                                    } else {
+                                        System.out.println("Lua chon khong hop le.");
+                                    }
                                 }
+                            } else {
+                                System.out.println("Lua chon khong hop le.");
                             }
-                        } else {
-                            System.out.println("Lua chon khong hop le.");
                         }
-                    }
                     } else {
                         System.out.println("Lua chon khong hop le.");
                     }
                 } else if (userChoice == 9) {
+                    // User chooses to view contact information
+                    ThongTinLienLac.displayContacts(danhSachLienLac);
+                } else if (userChoice == 10) {
+                    // User chooses to view program information
+                    ThongTinChuongTrinh.displayProgramInfo();
+                } else if (userChoice == 11) {
                     // Người dùng đăng xuất
                     loggedIn = false;
                     System.out.println("Da dang xuat.");
