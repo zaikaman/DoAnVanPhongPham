@@ -36,14 +36,14 @@ public class ThongTinChuongTrinh {
             "   - Facebook: cutt.ly/4wTNbGKf\n" +
             "   - Email: lesang01227982715@gmail.com\n" +
             "   - Phone: 0776592967\n",
-            new Date(2023, 11, 9),
+            new Date(2023, 11, 8),
             new Date(2023, 1, 1)
         );
 
-        System.out.println("Chuong trinh: " + chuongTrinh.ten);
-        System.out.println("Version: " + chuongTrinh.maChuongTrinh);
-        System.out.println("Release Date: " + chuongTrinh.ngayBatDau);
+        System.out.println("Chuong trinh: " + this.ten);
+        System.out.println("Version: " + this.maChuongTrinh);
+        System.out.println("Release Date: " + this.ngayBatDau);
         System.out.println("Dev team:");
-        System.out.println(chuongTrinh.teamDev);
+        System.out.println(this.teamDev);
     }
 }
