@@ -561,7 +561,8 @@ class TaiKhoan {
                     System.out.println("7. Dat don hang");
                     System.out.println("8. Xem don hang");
                     System.out.println("9. Dang xuat");
-                    System.out.print("Nhap lua chon (1, 2, 3, 4, 5, 6, 7, 8 hoac 9): ");
+                    System.out.println("Nhap lua chon (1, 2, 3, 4, 5, 6, 7, 8 hoac 9): ");
+                    System.out.print("Hay nhap thong tin nguoi dung truoc khi mua hang nhe!");
                     int userChoice = scanner.nextInt();
                     scanner.nextLine();
             
@@ -615,7 +616,7 @@ class TaiKhoan {
                         loggedIn = false;
                         System.out.println("Da dang xuat.");
                     } else {
-                        System.out.println("Lua chon khong hop le.");
+                        
                     }
                 }
             
