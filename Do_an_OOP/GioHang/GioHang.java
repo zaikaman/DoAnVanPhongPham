@@ -146,22 +146,6 @@ class GioHang {
             e.printStackTrace();
         }
     }        
-
-    void xemDonHang() {
-        if (donHangArray != null) {
-            for (int i = 0; i < soLuongDonHang; i++) {
-                if (donHangArray[i] != null) {
-                    System.out.println("Ma Don Hang: " + donHangArray[i].getMaDonHang());
-                    System.out.println("Khach Hang: " + donHangArray[i].getKhachHang().getHoTen());
-                    System.out.println("Ngay Dat Hang: " + donHangArray[i].getNgayDatHang());
-                    System.out.println("Trang Thai Don Hang: " + donHangArray[i].getTrangThaiDonHang());
-                    System.out.println("--------------");
-                }
-            }
-        } else {
-            System.out.println("Khong co don hang nao.");
-        }
-    }
     
     DonHang[] donHangArray = new DonHang[100000];
 
