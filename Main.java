@@ -23,6 +23,19 @@ class DonHang {
         this.trangThaiDonHang = "Chua xu ly"; // Mặc định là chưa xử lý
     }
 
+    public void luuDonHang() {
+        try {
+            FileWriter writer = new FileWriter("donhang.txt", true);
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
+            String strDate = formatter.format(ngayDatHang);  
+            writer.write(maDonHang + ", " + khachHang.getHoTen() + ", " + strDate + ", " + trangThaiDonHang + "\n");
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Có lỗi xảy ra khi lưu đơn hàng.");
+            e.printStackTrace();
+        }
+    }
+
     public String getMaDonHang() {
         return maDonHang;
     }
@@ -205,6 +218,23 @@ class GioHang {
         return gioHang;
     }
 
+    public void docDonHang() {
+        try {
+            File file = new File("donhang.txt");
+            Scanner reader = new Scanner(file);
+
+            System.out.println("Cac don hang da dat:");
+            while (reader.hasNextLine()) {
+                String data = reader.nextLine();
+                System.out.println(data);
+            }
+            reader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Khong tim thay tep don hang.");
+            e.printStackTrace();
+        }
+    }
+
     void xemDonHang() {
         if (donHangArray != null) {
             for (int i = 0; i < soLuongDonHang; i++) {
@@ -227,6 +257,8 @@ class GioHang {
         if (soLuongSanPhamTrongGio > 0) {
             // Create a new DonHang instance
             DonHang donHang = new DonHang("DH" + (taiKhoan.soLuongDonHang + 1), khachHang, this);
+
+            donHang.luuDonHang();
     
             // Assuming donHangArray is an array in the GioHang class to store orders
             donHangArray[soLuongDonHang] = donHang;
@@ -558,7 +590,8 @@ class TaiKhoan {
                     } else if (userChoice == 7) {
                         // Người dùng chọn đặt đơn hàng
                         gioHang.datDonHang(khachHang, taiKhoan);
-                    } else if (userChoice == 8) {    
+                    } else if (userChoice == 8) {
+                        gioHang.docDonHang();    
                         gioHang.xemDonHang();
                     } else if (userChoice == 9) {
                         // Người dùng đăng xuất
