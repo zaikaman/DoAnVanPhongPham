@@ -156,6 +156,10 @@ class BinhLuan {
         this.sanPham = sanPham;
     }
 
+    public void setNoiDung(String noiDung) {
+        this.noiDung = noiDung;
+    }
+
     public void luuBinhLuan() {
         try {
             File file = new File("binhluan.txt");
@@ -817,6 +821,7 @@ public class Main {
                                 if (commentChoice.equalsIgnoreCase("y")) {
                                     System.out.print("Nhap noi dung binh luan: ");
                                     String commentContent = scanner.nextLine();
+                                    binhLuan.setNoiDung(commentContent);  // Update the comment content
                                     binhLuan.luuBinhLuan();
                                 } else if (commentChoice.equalsIgnoreCase("n")) {
                                     continueLoop = false;
