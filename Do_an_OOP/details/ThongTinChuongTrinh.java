@@ -36,8 +36,8 @@ public class ThongTinChuongTrinh {
             "   - Facebook: cutt.ly/4wTNbGKf\n" +
             "   - Email: lesang01227982715@gmail.com\n" +
             "   - Phone: 0776592967\n",
-            new Date(2023, 11, 1),
-            new Date(2023, 11, 30)
+            new Date(2023, 11, 9),
+            new Date(2023, 1, 1)
         );
 
         System.out.println("Chuong trinh: " + chuongTrinh.ten);
