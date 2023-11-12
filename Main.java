@@ -9,6 +9,76 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.Calendar;
 
+class KhuyenMai {
+    private String maKhuyenMai;
+    private String ten;
+    private String moTa;
+    private Date ngayBatDau;
+    private Date ngayKetThuc;
+    private SanPham[] danhSachSanPhamApDung;
+
+    // Add methods to get and set these properties
+    // Add a method to apply the discount to a product
+}
+
+class GiaoDich {
+    private String maGiaoDich;
+    private DonHang donHang;
+    private PhuongThucThanhToan phuongThucThanhToan;
+    private double soTien;
+
+    // Add methods to get and set these properties
+    // Add a method to execute the transaction
+}
+
+class GiaoHang {
+    private String maGiaoHang;
+    private DonHang donHang;
+    private Date ngayGiao;
+    private String diaChiGiaoHang;
+    private String trangThaiGiaoHang;
+
+    // Add methods to get and set these properties
+    // Add a method to update the delivery status
+}
+
+class NhaSanXuat {
+    private String maNhaSanXuat;
+    private String ten;
+    private String diaChi;
+
+    // Add methods to get and set these properties
+}
+
+class DanhMuc {
+    private String maDanhMuc;
+    private String ten;
+    private SanPham[] danhSachSanPham;
+
+    // Add methods to get and set these properties
+    // Add a method to add a product to the category
+}
+
+class HoaDon {
+    private String maHoaDon;
+    private DonHang donHang;
+    private Date ngayTao;
+    private double tongSoTien;
+
+    // Add methods to get and set these properties
+    // Add a method to calculate the total amount
+}
+
+class ChiTietHoaDon extends HoaDon {
+    private SanPham sanPham;
+    private int soLuong;
+    private double donGia;
+
+    // Add methods to get and set these properties
+    // Add a method to calculate the total amount for this product
+}
+
+
 class DonHang {
     private String maDonHang;
     private KhachHang khachHang;
