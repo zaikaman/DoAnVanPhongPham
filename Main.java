@@ -727,22 +727,29 @@ class TaiKhoan {
     int soLuongDonHang = 0; // Biến đếm số lượng đơn hàng
 
     void dangKy(NguoiDung nguoiDung) throws IOException {
-        docDanhSachNguoiDung(); // Đọc danh sách tài khoản từ tệp trước khi thêm tài khoản mới
+    docDanhSachNguoiDung(); // Đọc danh sách tài khoản từ tệp trước khi thêm tài khoản mới
 
-        for (int i = 0; i < soLuongNguoiDung; i++) {
-            if (this.nguoiDung[i].tenDangNhap.equals(nguoiDung.tenDangNhap)) {
-                System.out.println("Ten dang nhap da ton tai. Vui long chon mot ten dang nhap khac");
-                return; // Không thực hiện đăng ký nếu tên đăng nhập đã tồn tại
-            }
+    for (int i = 0; i < soLuongNguoiDung; i++) {
+        if (this.nguoiDung[i].tenDangNhap.equals(nguoiDung.tenDangNhap)) {
+            System.out.println("Ten dang nhap da ton tai. Vui long chon mot ten dang nhap khac");
+            return; // Không thực hiện đăng ký nếu tên đăng nhập đã tồn tại
         }
-
-        this.nguoiDung[soLuongNguoiDung] = nguoiDung;
-        soLuongNguoiDung++;
-
-        ghiDanhSachNguoiDung(); // Ghi danh sách tài khoản mới vào tệp
-
-        System.out.println("Dang ky thanh cong!");
     }
+
+    // Check if the username and password are at least 6 characters long
+    if (nguoiDung.tenDangNhap.length() < 6 || nguoiDung.matKhau.length() < 6) {
+        System.out.println("Ten dang nhap va mat khau phai co it nhat 6 ky tu.");
+        return;
+    }
+
+    this.nguoiDung[soLuongNguoiDung] = nguoiDung;
+    soLuongNguoiDung++;
+
+    ghiDanhSachNguoiDung(); // Ghi danh sách tài khoản mới vào tệp
+
+    System.out.println("Dang ky thanh cong!");
+}
+
 
     void docThongTinNguoiDung(KhachHang khachHang) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader("thongtin.txt"));
@@ -797,26 +804,36 @@ class TaiKhoan {
     }
 
     boolean dangNhap(String tenDangNhap, String matKhau) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(tenFile));
-        String line;
-        boolean found = false;
+    BufferedReader reader = new BufferedReader(new FileReader(tenFile));
+    String line;
+    boolean found = false;
+    boolean userExists = false;
 
-
-
-
-        while ((line = reader.readLine()) != null) {
-            String[] parts = line.split(",");
-            if (parts.length == 3 && parts[0].equals(tenDangNhap) && parts[1].equals(matKhau)) {
+    while ((line = reader.readLine()) != null) {
+        String[] parts = line.split(",");
+        if (parts.length == 3 && parts[0].equals(tenDangNhap)) {
+            userExists = true;
+            if (parts[1].equals(matKhau)) {
                 System.out.println("Dang nhap thanh cong voi vai tro " + parts[2] + "!");
                 found = true;
-                break;
             }
+            break;
         }
-
-        reader.close();
-
-        return found;
     }
+
+    reader.close();
+
+    if (userExists && !found) {
+        System.out.println("Mat khau khong dung.");
+        System.out.println("Vui long thu lai.");
+    } else if (!userExists) {
+        System.out.println("Tai khoan khong ton tai.");
+        System.out.println("Vui long dang ky tai khoan.");
+    }
+
+    return found;
+}
+
     void saveUserInfoToFile(NguoiDung nguoiDung) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter("thongtin.txt", true));
         writer.write(nguoiDung.maNguoiDung + "," + nguoiDung.tenDangNhap + "," + nguoiDung.hoTen + "," +
@@ -1066,8 +1083,7 @@ ThongTinChuongTrinh chuongTrinh = new ThongTinChuongTrinh(
                         khachHang = new KhachHang(loginUsername, loginPassword);
                         taiKhoan.docThongTinNguoiDung(khachHang);
                     } else {
-                        System.out.println("Ten dang nhap hoac mat khau khong dung hoac tai khoan khong ton tai.");
-                        System.out.println("Vui lòng dang ky tai khoan neu tai khoan khong ton tai.");
+        
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
